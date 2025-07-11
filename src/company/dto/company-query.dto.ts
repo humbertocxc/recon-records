@@ -1,15 +1,20 @@
-import { IsString, IsOptional, IsUUID } from 'class-validator';
+import { IsString, IsOptional, IsInt, Min } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CompanyQueryDto {
   @IsString()
   @IsOptional()
   name?: string;
 
-  @IsString()
+  @IsInt()
+  @Min(0)
   @IsOptional()
-  description?: string;
+  @Type(() => Number)
+  offset?: number;
 
-  @IsUUID()
+  @IsInt()
+  @Min(1)
   @IsOptional()
-  id?: string;
+  @Type(() => Number)
+  limit?: number;
 }

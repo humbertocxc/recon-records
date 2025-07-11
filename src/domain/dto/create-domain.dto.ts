@@ -1,15 +1,34 @@
-import { IsString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsUUID,
+  IsNumber,
+} from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateDomainDto {
+  @ApiProperty({
+    description: 'The name of the domain',
+    example: '',
+  })
   @IsString()
   @IsNotEmpty()
-  name: string;
+  value: string;
 
-  @IsString()
+  @ApiProperty({
+    description: 'The name of the domain',
+    example: '',
+  })
+  @IsNumber()
   @IsOptional()
-  description?: string;
+  rank?: number;
 
+  @ApiProperty({
+    description: 'The companyId of the domain',
+    example: '',
+  })
   @IsUUID()
-  @IsNotEmpty()
+  @IsOptional()
   companyId: string;
 }

@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Company } from '../../company/entities/company.entity';
 
 @Entity()
@@ -7,13 +13,18 @@ export class Domain {
   id: string;
 
   @Column({ unique: true })
-  name: string;
+  value: string;
 
-  @Column({ nullable: true })
-  description: string;
+  @Column({ type: 'int', nullable: true })
+  rank?: number;
 
   @ManyToOne(() => Company, (company) => company.domains, {
-    onDelete: 'CASCADE',
+    onDelete: 'SET NULL',
+    nullable: true,
   })
-  company: Company;
+  @JoinColumn({ name: 'companyId' })
+  company?: Company;
+
+  @Column({ nullable: true })
+  companyId: string | null;
 }

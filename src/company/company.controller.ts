@@ -16,8 +16,6 @@ import { UpdateCompanyDto } from './dto/update-company.dto';
 import { CompanyQueryDto } from './dto/company-query.dto';
 import {
   ApiTags,
-  ApiOperation,
-  ApiResponse,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiNoContentResponse,
@@ -27,6 +25,7 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 import { Company } from './entities/company.entity';
+import { CompanyListDto } from './dto/company-list.dto';
 
 @ApiTags('companies')
 @Controller('companies')
@@ -35,7 +34,6 @@ export class CompanyController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Create a new company' })
   @ApiCreatedResponse({
     description: 'The company has been successfully created.',
     type: Company,
@@ -46,37 +44,31 @@ export class CompanyController {
   }
 
   @Get()
-  @ApiOperation({
-    summary: 'Retrieve a list of companies, with optional filtering',
+  @ApiOkResponse({
+    type: [Company],
   })
   @ApiQuery({
     name: 'name',
     required: false,
-    description: 'Filter by company name (partial match)',
+    type: String,
   })
   @ApiQuery({
-    name: 'description',
+    name: 'limit',
     required: false,
-    description: 'Filter by company description (partial match)',
+    type: Number,
   })
   @ApiQuery({
-    name: 'id',
+    name: 'offset',
     required: false,
-    description: 'Filter by company UUID',
+    type: Number,
   })
-  @ApiOkResponse({
-    description: 'Successfully retrieved list of companies.',
-    type: [Company],
-  })
-  async findAll(@Query() query: CompanyQueryDto): Promise<Company[]> {
+  findAll(@Query() query: CompanyQueryDto): Promise<CompanyListDto> {
     return this.companyService.findAll(query);
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Retrieve a single company by ID' })
   @ApiParam({
     name: 'id',
-    description: 'UUID of the company to retrieve',
     type: 'string',
   })
   @ApiOkResponse({
@@ -91,10 +83,8 @@ export class CompanyController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update an existing company by ID' })
   @ApiParam({
     name: 'id',
-    description: 'UUID of the company to update',
     type: 'string',
   })
   @ApiOkResponse({
@@ -114,10 +104,8 @@ export class CompanyController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: 'Delete a company by ID' })
   @ApiParam({
     name: 'id',
-    description: 'UUID of the company to delete',
     type: 'string',
   })
   @ApiNoContentResponse({ description: 'Company successfully deleted.' })

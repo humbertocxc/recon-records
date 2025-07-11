@@ -48,7 +48,7 @@ export class DomainService {
       });
       if (!company) {
         throw new BadRequestException(
-          `Company with ID "${domainDto.companyId}" not found for domain "${domainDto.name}"`,
+          `Company with ID "${domainDto.companyId}" not found for domain "${domainDto.value}"`,
         );
       }
       domainsToCreate.push(
@@ -59,18 +59,12 @@ export class DomainService {
   }
 
   async findAll(query: DomainQueryDto): Promise<Domain[]> {
-    const where: any = {};
+    const where: Record<string, unknown> = {};
     if (query.name) {
       where.name = Like(`%${query.name}%`);
     }
-    if (query.description) {
-      where.description = Like(`%${query.description}%`);
-    }
     if (query.companyId) {
       where.company = { id: query.companyId };
-    }
-    if (query.id) {
-      where.id = query.id;
     }
     return this.domainRepository.find({ where, relations: ['company'] });
   }

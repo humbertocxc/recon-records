@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
+import { Repository, FindManyOptions, ILike } from 'typeorm';
 import { Company } from './entities/company.entity';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { CompanyQueryDto } from './dto/company-query.dto';
+import { CompanyListDto } from './dto/company-list.dto';
 
 @Injectable()
 export class CompanyService {
@@ -18,25 +19,42 @@ export class CompanyService {
     return this.companyRepository.save(company);
   }
 
-  async findAll(query: CompanyQueryDto): Promise<Company[]> {
-    const where: any = {};
+  async findAll(query: CompanyQueryDto): Promise<CompanyListDto> {
+    const where: Record<string, unknown> = {};
+    const relationsToLoad: string[] = [];
+    const selectFields: string[] | { [key: string]: any } | undefined =
+      undefined;
+
     if (query.name) {
-      where.name = Like(`%${query.name}%`);
+      where.name = ILike(`%${query.name}%`);
     }
-    if (query.description) {
-      where.description = Like(`%${query.description}%`);
-    }
-    if (query.id) {
-      where.id = query.id;
-    }
-    return this.companyRepository.find({ where, relations: ['domains'] });
+
+    const findOptions: FindManyOptions<Company> = {
+      where,
+      relations: relationsToLoad,
+      take: query.limit,
+      skip: query.offset,
+      select: selectFields,
+    };
+
+    const [companies, filteredCount] =
+      await this.companyRepository.findAndCount(findOptions);
+
+    const totalCount = await this.companyRepository.count();
+
+    return {
+      totalCount,
+      filteredCount,
+      data: companies,
+    };
   }
 
   async findOne(id: string): Promise<Company> {
     const company = await this.companyRepository.findOne({
       where: { id },
-      relations: ['domains'],
+      relations: [],
     });
+
     if (!company) {
       throw new NotFoundException(`Company with ID "${id}" not found`);
     }
@@ -47,7 +65,7 @@ export class CompanyService {
     id: string,
     updateCompanyDto: UpdateCompanyDto,
   ): Promise<Company> {
-    const company = await this.findOne(id); // Ensure company exists
+    const company = await this.findOne(id);
     this.companyRepository.merge(company, updateCompanyDto);
     return this.companyRepository.save(company);
   }
