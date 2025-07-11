@@ -71,12 +71,12 @@ export class DomainController {
   })
   @ApiQuery({
     name: 'limit',
-    required: false,
+    required: true,
     type: Number,
   })
   @ApiQuery({
     name: 'offset',
-    required: false,
+    required: true,
     type: Number,
   })
   findAll(@Query() query: DomainQueryDto) {

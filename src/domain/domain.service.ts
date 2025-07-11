@@ -4,13 +4,14 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
+import { Repository, FindManyOptions, ILike } from 'typeorm';
 import { Domain } from './entities/domain.entity';
 import { Company } from '../company/entities/company.entity';
 import { CreateDomainDto } from './dto/create-domain.dto';
 import { UpdateDomainDto } from './dto/update-domain.dto';
 import { DomainQueryDto } from './dto/domain-query.dto';
 import { CreateMultipleDomainsDto } from './dto/create-multiple-domains.dto';
+import { DomainListDto } from './dto/domain-list.dto';
 
 @Injectable()
 export class DomainService {
@@ -33,7 +34,7 @@ export class DomainService {
 
     const domain = this.domainRepository.create({
       ...createDomainDto,
-      company: company,
+      company,
     });
     return this.domainRepository.save(domain);
   }
@@ -58,15 +59,41 @@ export class DomainService {
     return this.domainRepository.save(domainsToCreate);
   }
 
-  async findAll(query: DomainQueryDto): Promise<Domain[]> {
-    const where: Record<string, unknown> = {};
+  async findAll(query: DomainQueryDto): Promise<DomainListDto> {
+    const filteredWhere: Record<string, unknown> = {
+      companyId: query.companyId,
+    };
+    const relationsToLoad: string[] = [];
+    const selectFields: string[] | { [key: string]: any } | undefined =
+      undefined;
+
     if (query.name) {
-      where.name = Like(`%${query.name}%`);
+      filteredWhere.value = ILike(`%${query.name}%`);
     }
-    if (query.companyId) {
-      where.company = { id: query.companyId };
-    }
-    return this.domainRepository.find({ where, relations: ['company'] });
+
+    const totalCount = await this.domainRepository.count({
+      where: { companyId: query.companyId },
+    });
+
+    const filteredCount = await this.domainRepository.count({
+      where: filteredWhere,
+    });
+
+    const findOptions: FindManyOptions<Domain> = {
+      where: filteredWhere,
+      relations: relationsToLoad,
+      take: query.limit,
+      skip: query.offset,
+      select: selectFields,
+    };
+
+    const domains = await this.domainRepository.find(findOptions);
+
+    return {
+      totalCount,
+      filteredCount,
+      data: domains,
+    };
   }
 
   async findOne(id: string): Promise<Domain> {

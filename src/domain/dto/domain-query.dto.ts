@@ -1,4 +1,11 @@
-import { IsString, IsOptional, IsUUID, IsInt, Min } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsUUID,
+  IsInt,
+  Min,
+  IsNotEmpty,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class DomainQueryDto {
@@ -24,13 +31,13 @@ export class DomainQueryDto {
 
   @IsInt()
   @Min(0)
-  @IsOptional()
+  @IsNotEmpty()
   @Type(() => Number)
   offset?: number;
 
   @IsInt()
   @Min(1)
-  @IsOptional()
+  @IsNotEmpty()
   @Type(() => Number)
   limit?: number;
 }
