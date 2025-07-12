@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsArray, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCompanyDto {
@@ -17,4 +17,17 @@ export class CreateCompanyDto {
   @IsString()
   @IsOptional()
   description?: string;
+
+  @ApiProperty({
+    description:
+      'An array of strings representing the scope (domains, IPs, wildcards).',
+    type: [String],
+    example: ['example.com', '192.168.1.1', '*.test.com'],
+    required: false,
+    nullable: true,
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  scope?: string[];
 }

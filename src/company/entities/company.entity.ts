@@ -12,6 +12,9 @@ export class Company {
   @Column({ nullable: true })
   description: string;
 
+  @Column('simple-array', { nullable: true })
+  scope?: string[];
+
   @OneToMany(() => Domain, (domain) => domain.company, { cascade: true })
   domains: Domain[];
 }

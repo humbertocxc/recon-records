@@ -27,4 +27,7 @@ export class Domain {
 
   @Column({ nullable: true })
   companyId: string | null;
+
+  @Column({ default: false })
+  isInScope?: boolean;
 }

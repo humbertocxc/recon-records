@@ -12,6 +12,7 @@ import { UpdateDomainDto } from './dto/update-domain.dto';
 import { DomainQueryDto } from './dto/domain-query.dto';
 import { CreateMultipleDomainsDto } from './dto/create-multiple-domains.dto';
 import { DomainListDto } from './dto/domain-list.dto';
+import { isTargetInScope } from 'src/common/utils/scope-checker.util';
 
 @Injectable()
 export class DomainService {
@@ -26,15 +27,19 @@ export class DomainService {
     const company = await this.companyRepository.findOneBy({
       id: createDomainDto.companyId,
     });
+
     if (!company) {
       throw new NotFoundException(
         `Company with ID "${createDomainDto.companyId}" not found`,
       );
     }
 
+    const isInScope = isTargetInScope(createDomainDto.value, company.scope);
+
     const domain = this.domainRepository.create({
       ...createDomainDto,
       company,
+      isInScope,
     });
     return this.domainRepository.save(domain);
   }
@@ -60,15 +65,21 @@ export class DomainService {
   }
 
   async findAll(query: DomainQueryDto): Promise<DomainListDto> {
-    const filteredWhere: Record<string, unknown> = {
-      companyId: query.companyId,
-    };
+    const filteredWhere: Record<string, unknown> = {};
     const relationsToLoad: string[] = [];
     const selectFields: string[] | { [key: string]: any } | undefined =
       undefined;
 
     if (query.name) {
       filteredWhere.value = ILike(`%${query.name}%`);
+    }
+
+    if (query.companyId !== undefined) {
+      filteredWhere.companyId = query.companyId;
+    }
+
+    if (query.isInScope === 'true' || query.isInScope === 'false') {
+      filteredWhere.isInScope = query.isInScope === 'true';
     }
 
     const totalCount = await this.domainRepository.count({

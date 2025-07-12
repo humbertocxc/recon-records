@@ -5,6 +5,7 @@ import {
   IsInt,
   Min,
   IsNotEmpty,
+  IsIn,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -21,9 +22,9 @@ export class DomainQueryDto {
   @IsOptional()
   companyName?: string;
 
-  @IsString()
   @IsOptional()
-  companyDescription?: string;
+  @IsIn(['true', 'false'])
+  isInScope?: string;
 
   @IsUUID()
   @IsOptional()

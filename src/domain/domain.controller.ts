@@ -79,6 +79,11 @@ export class DomainController {
     required: true,
     type: Number,
   })
+  @ApiQuery({
+    name: 'isInScope',
+    required: false,
+    type: Boolean,
+  })
   findAll(@Query() query: DomainQueryDto) {
     return this.domainService.findAll(query);
   }
