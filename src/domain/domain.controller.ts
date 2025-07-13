@@ -14,7 +14,6 @@ import { DomainService } from './domain.service';
 import { CreateDomainDto } from './dto/create-domain.dto';
 import { UpdateDomainDto } from './dto/update-domain.dto';
 import { DomainQueryDto } from './dto/domain-query.dto';
-import { CreateMultipleDomainsDto } from './dto/create-multiple-domains.dto';
 import {
   ApiTags,
   ApiResponse,
@@ -44,15 +43,6 @@ export class DomainController {
   @ApiBadRequestResponse({ description: 'Invalid input data.' })
   create(@Body() createDomainDto: CreateDomainDto) {
     return this.domainService.create(createDomainDto);
-  }
-
-  @Post('bulk')
-  @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse({
-    type: [Domain],
-  })
-  createMultiple(@Body() createMultipleDomainsDto: CreateMultipleDomainsDto) {
-    return this.domainService.createMultiple(createMultipleDomainsDto);
   }
 
   @Get()

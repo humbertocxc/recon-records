@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindManyOptions, ILike } from 'typeorm';
 import { Domain } from './entities/domain.entity';
@@ -10,7 +6,6 @@ import { Company } from '../company/entities/company.entity';
 import { CreateDomainDto } from './dto/create-domain.dto';
 import { UpdateDomainDto } from './dto/update-domain.dto';
 import { DomainQueryDto } from './dto/domain-query.dto';
-import { CreateMultipleDomainsDto } from './dto/create-multiple-domains.dto';
 import { DomainListDto } from './dto/domain-list.dto';
 import { isTargetInScope } from 'src/common/utils/scope-checker.util';
 
@@ -42,26 +37,6 @@ export class DomainService {
       isInScope,
     });
     return this.domainRepository.save(domain);
-  }
-
-  async createMultiple(
-    createMultipleDomainsDto: CreateMultipleDomainsDto,
-  ): Promise<Domain[]> {
-    const domainsToCreate: Domain[] = [];
-    for (const domainDto of createMultipleDomainsDto.domains) {
-      const company = await this.companyRepository.findOneBy({
-        id: domainDto.companyId,
-      });
-      if (!company) {
-        throw new BadRequestException(
-          `Company with ID "${domainDto.companyId}" not found for domain "${domainDto.value}"`,
-        );
-      }
-      domainsToCreate.push(
-        this.domainRepository.create({ ...domainDto, company }),
-      );
-    }
-    return this.domainRepository.save(domainsToCreate);
   }
 
   async findAll(query: DomainQueryDto): Promise<DomainListDto> {
