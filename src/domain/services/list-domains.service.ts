@@ -13,6 +13,7 @@ export class ListDomainService {
   ) {}
 
   async findAll(query: DomainQueryDto): Promise<DomainListDto> {
+    const startTime = Date.now();
     const filteredWhere: Record<string, unknown> = {};
     const relationsToLoad: string[] = [];
     const selectFields: string[] | { [key: string]: any } | undefined =
@@ -30,9 +31,7 @@ export class ListDomainService {
       filteredWhere.isInScope = query.isInScope === 'true';
     }
 
-    const totalCount = await this.domainRepository.count({
-      where: { companyId: query.companyId },
-    });
+    const skip = (query.offset ?? 0) * (query.limit ?? 100);
 
     const filteredCount = await this.domainRepository.count({
       where: filteredWhere,
@@ -42,16 +41,17 @@ export class ListDomainService {
       where: filteredWhere,
       relations: relationsToLoad,
       take: query.limit,
-      skip: query.offset,
+      skip,
       select: selectFields,
     };
 
     const domains = await this.domainRepository.find(findOptions);
 
+    const endTime = Date.now();
     return {
-      totalCount,
-      filteredCount,
       data: domains,
+      filteredCount,
+      durationMs: Math.round(endTime - startTime),
     };
   }
 

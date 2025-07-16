@@ -3,10 +3,10 @@ import { Domain } from '../entities/domain.entity';
 
 export class DomainListDto {
   @ApiProperty({
-    description: 'Total number of domains available for the company.',
-    example: 100,
+    type: [Domain],
+    description: 'Array of company objects.',
   })
-  totalCount: number;
+  data: Domain[];
 
   @ApiProperty({
     description: 'Total number of domains matching the filter criteria.',
@@ -15,8 +15,8 @@ export class DomainListDto {
   filteredCount: number;
 
   @ApiProperty({
-    type: [Domain],
-    description: 'Array of company objects.',
+    description: 'Time taken to execute the query in milliseconds.',
+    example: 150,
   })
-  data: Domain[];
+  durationMs: number;
 }

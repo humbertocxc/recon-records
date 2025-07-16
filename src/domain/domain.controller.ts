@@ -69,12 +69,12 @@ export class DomainController {
   })
   @ApiQuery({
     name: 'limit',
-    required: true,
+    required: false,
     type: Number,
   })
   @ApiQuery({
     name: 'offset',
-    required: true,
+    required: false,
     type: Number,
   })
   @ApiQuery({

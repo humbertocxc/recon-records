@@ -44,6 +44,10 @@ export function isTargetInScope(target: string, scopeList?: string[]): boolean {
     return false;
   }
 
+  if (scopeList.length === 1 && scopeList[0].trim() === '*') {
+    return true;
+  }
+
   for (const rawScope of scopeList) {
     const scope = rawScope.trim().toLowerCase();
 
