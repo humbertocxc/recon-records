@@ -102,17 +102,25 @@ export class CompanyController {
     return this.companyService.update(id, updateCompanyDto);
   }
 
-  @Delete(':id')
+  @Delete(':id/:newCompanyId')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiParam({
     name: 'id',
+    type: 'string',
+  })
+  @ApiParam({
+    name: 'newCompanyId',
+    description: 'The UUID of the new company to receive the domains',
     type: 'string',
   })
   @ApiNoContentResponse({ description: 'Company successfully deleted.' })
   @ApiNotFoundResponse({
     description: 'Company with the specified ID not found.',
   })
-  async remove(@Param('id') id: string): Promise<void> {
-    return this.companyService.remove(id);
+  async remove(
+    @Param('id') id: string,
+    @Param('newCompanyId') newCompanyId: string,
+  ): Promise<void> {
+    return this.companyService.remove(id, newCompanyId);
   }
 }

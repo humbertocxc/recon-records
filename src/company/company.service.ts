@@ -6,12 +6,15 @@ import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { CompanyQueryDto } from './dto/company-query.dto';
 import { CompanyListDto } from './dto/company-list.dto';
+import { Domain } from 'src/domain/entities/domain.entity';
 
 @Injectable()
 export class CompanyService {
   constructor(
     @InjectRepository(Company)
     private readonly companyRepository: Repository<Company>,
+    @InjectRepository(Domain)
+    private readonly domainRepository: Repository<Domain>,
   ) {}
 
   async create(createCompanyDto: CreateCompanyDto): Promise<Company> {
@@ -70,8 +73,14 @@ export class CompanyService {
     return this.companyRepository.save(company);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string, newCompanyId: string): Promise<void> {
+    await this.domainRepository.update(
+      { company: { id } },
+      { company: { id: newCompanyId } },
+    );
+
     const result = await this.companyRepository.delete(id);
+
     if (result.affected === 0) {
       throw new NotFoundException(`Company with ID "${id}" not found`);
     }
