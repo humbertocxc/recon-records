@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DomainService } from './services/domain.service';
 import { DomainController } from './domain.controller';
 import { Domain } from './entities/domain.entity';
 import { Company } from '../company/entities/company.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { CreateDomainService } from './services/create-domain.service';
+import { ListDomainService } from './services/list-domains.service';
+import { UpdateDomainService } from './services/update-domain.service';
+import { DeleteDomainService } from './services/delete-domain.service';
 
 @Module({
   imports: [
@@ -24,6 +27,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ]),
   ],
   controllers: [DomainController],
-  providers: [DomainService],
+  providers: [
+    CreateDomainService,
+    ListDomainService,
+    UpdateDomainService,
+    DeleteDomainService,
+  ],
 })
 export class DomainModule {}
