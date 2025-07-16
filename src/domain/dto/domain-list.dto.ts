@@ -15,6 +15,14 @@ export class DomainListDto {
   filteredCount: number;
 
   @ApiProperty({
+    description:
+      'Cursor for pagination, used to fetch the next set of results.',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+    required: false,
+  })
+  nextCursor?: string;
+
+  @ApiProperty({
     description: 'Time taken to execute the query in milliseconds.',
     example: 150,
   })

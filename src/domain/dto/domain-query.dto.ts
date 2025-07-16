@@ -6,7 +6,6 @@ import {
   Min,
   IsIn,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 
 export class DomainQueryDto {
   @IsString()
@@ -29,15 +28,12 @@ export class DomainQueryDto {
   @IsOptional()
   companyUuid?: string;
 
-  @IsInt()
-  @Min(0)
   @IsOptional()
-  @Type(() => Number)
-  offset?: number;
+  @IsUUID()
+  cursor?: string;
 
+  @IsOptional()
   @IsInt()
   @Min(1)
-  @IsOptional()
-  @Type(() => Number)
   limit?: number;
 }

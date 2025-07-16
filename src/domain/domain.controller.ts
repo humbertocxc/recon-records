@@ -73,9 +73,9 @@ export class DomainController {
     type: Number,
   })
   @ApiQuery({
-    name: 'offset',
+    name: 'cursor',
     required: false,
-    type: Number,
+    type: String,
   })
   @ApiQuery({
     name: 'isInScope',
