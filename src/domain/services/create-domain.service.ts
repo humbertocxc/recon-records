@@ -4,9 +4,9 @@ import { Repository } from 'typeorm';
 import { Domain } from '../entities/domain.entity';
 import { Company } from '../../company/entities/company.entity';
 import { CreateDomainDto } from '../dto/create-domain.dto';
-import { isTargetInScope } from 'src/common/utils/scope-checker.util';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
+import { isDomainInScope } from 'src/common/utils/scope-checker-domain.util';
 
 @Injectable()
 export class CreateDomainService {
@@ -29,7 +29,7 @@ export class CreateDomainService {
       );
     }
 
-    const isInScope = isTargetInScope(createDomainDto.value, company.scope);
+    const isInScope = isDomainInScope(createDomainDto.value, company.scope);
 
     const domain = this.domainRepository.create({
       ...createDomainDto,
