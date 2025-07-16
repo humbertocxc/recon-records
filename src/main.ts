@@ -49,10 +49,11 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: ['amqp://guest:guest@localhost:5672'],
-      queue: 'app_queue',
+      queue: 'found_subs_queue',
       queueOptions: {
-        durable: false,
+        durable: true,
       },
+      noAck: false,
     },
   });
 

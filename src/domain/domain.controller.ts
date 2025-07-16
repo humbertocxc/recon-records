@@ -10,7 +10,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { DomainService } from './domain.service';
+import { DomainService } from './services/domain.service';
 import { CreateDomainDto } from './dto/create-domain.dto';
 import { UpdateDomainDto } from './dto/update-domain.dto';
 import { DomainQueryDto } from './dto/domain-query.dto';
