@@ -8,6 +8,8 @@ import { CreateDomainService } from './services/create-domain.service';
 import { ListDomainService } from './services/list-domains.service';
 import { UpdateDomainService } from './services/update-domain.service';
 import { DeleteDomainService } from './services/delete-domain.service';
+import { FoundSubsConsumerService } from './services/found-subs-consumer.service';
+import { FoundSubsConsumerController } from './found-subs-consumer.controller';
 
 @Module({
   imports: [
@@ -26,12 +28,13 @@ import { DeleteDomainService } from './services/delete-domain.service';
       },
     ]),
   ],
-  controllers: [DomainController],
+  controllers: [DomainController, FoundSubsConsumerController],
   providers: [
     CreateDomainService,
     ListDomainService,
     UpdateDomainService,
     DeleteDomainService,
+    FoundSubsConsumerService,
   ],
 })
 export class DomainModule {}
