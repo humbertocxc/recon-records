@@ -4,8 +4,10 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  OneToOne,
 } from 'typeorm';
 import { Company } from '../../company/entities/company.entity';
+import { DnsZone } from 'src/dns/dns-zone/entities/dns-zone.entity';
 
 @Entity()
 export class Domain {
@@ -30,4 +32,7 @@ export class Domain {
 
   @Column({ default: false })
   isInScope?: boolean;
+
+  @OneToOne(() => DnsZone, (zone) => zone.domain, { nullable: true })
+  dnsZone?: DnsZone;
 }

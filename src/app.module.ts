@@ -7,6 +7,7 @@ import { CompanyModule } from './company/company.module';
 import { DomainModule } from './domain/domain.module';
 import { Company } from './company/entities/company.entity';
 import { Domain } from './domain/entities/domain.entity';
+import { DnsZoneModule } from './dns/dns-zone/dns-zone.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { Domain } from './domain/entities/domain.entity';
     }),
     CompanyModule,
     DomainModule,
+    DnsZoneModule,
   ],
   controllers: [AppController],
   providers: [AppService],
