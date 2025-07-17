@@ -47,7 +47,7 @@ export class CreateDomainService {
         };
         await lastValueFrom(
           this.client.emit(
-            'domain_to_enum_queue',
+            'domains_to_passive_enum_queue',
             JSON.stringify(domainToPublish),
           ),
         );

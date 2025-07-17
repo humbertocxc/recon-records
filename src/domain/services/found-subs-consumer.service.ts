@@ -17,7 +17,7 @@ export class FoundSubsConsumerService {
     private readonly companyRepository: Repository<Company>,
   ) {}
 
-  @EventPattern('found_subs_queue')
+  @EventPattern('passive_found_subs_queue')
   async processFoundSubdomain(@Payload() data: FoundSubDto) {
     const { value, companyId } = data;
     if (!value || !companyId) {

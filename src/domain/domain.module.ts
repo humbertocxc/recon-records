@@ -20,7 +20,7 @@ import { FoundSubsConsumerController } from './found-subs-consumer.controller';
         transport: Transport.RMQ,
         options: {
           urls: ['amqp://localhost:5672'],
-          queue: 'domain_to_enum_queue',
+          queue: 'domains_to_passive_enum_queue',
           queueOptions: {
             durable: true,
           },
