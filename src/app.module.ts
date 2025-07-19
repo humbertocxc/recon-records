@@ -7,6 +7,7 @@ import { Company } from './company/entities/company.entity';
 import { Domain } from './domain/entities/domain.entity';
 import { DnsZoneModule } from './dns/dns-zone/dns-zone.module';
 import { IpModule } from './ip/ip.module';
+import { RabbitConfigService } from './common/messaging/rabbit-config.service';
 
 @Module({
   imports: [
@@ -29,5 +30,7 @@ import { IpModule } from './ip/ip.module';
     DnsZoneModule,
     CompanyModule,
   ],
+  providers: [RabbitConfigService],
+  exports: [RabbitConfigService],
 })
 export class AppModule {}

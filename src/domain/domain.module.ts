@@ -11,6 +11,8 @@ import { DeleteDomainService } from './services/delete-domain.service';
 import { FoundSubsConsumerService } from './services/found-subs-consumer.service';
 import { FoundSubsConsumerController } from './found-subs-consumer.controller';
 import { IpAddress } from 'src/ip/entities/ip.entity';
+import { AmqpService } from 'src/common/messaging/amqp.service';
+import { RabbitConfigService } from 'src/common/messaging/rabbit-config.service';
 
 @Module({
   imports: [
@@ -36,6 +38,9 @@ import { IpAddress } from 'src/ip/entities/ip.entity';
     UpdateDomainService,
     DeleteDomainService,
     FoundSubsConsumerService,
+    AmqpService,
+    RabbitConfigService,
   ],
+  exports: [AmqpService],
 })
 export class DomainModule {}

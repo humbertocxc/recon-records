@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { RabbitConfigService } from './common/messaging/rabbit-config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,9 +18,7 @@ async function bootstrap() {
       whitelist: true,
       transform: true,
       forbidNonWhitelisted: true,
-      transformOptions: {
-        enableImplicitConversion: true,
-      },
+      transformOptions: { enableImplicitConversion: true },
     }),
   );
 
@@ -28,38 +26,19 @@ async function bootstrap() {
     .setTitle('Recon Records API')
     .setDescription('API documentation for the Recon Records Microservice')
     .setVersion('1.0')
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-        name: 'JWT',
-        description: 'Enter JWT token',
-        in: 'header',
-      },
-      'JWT-auth',
-    )
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
-    options: {
-      urls: ['amqp://guest:guest@localhost:5672'],
-      queue: 'passive_found_subs_queue',
-      queueOptions: {
-        durable: true,
-      },
-      noAck: false,
-    },
-  });
-
-  await app.startAllMicroservices();
+  const rabbitConfigService = app.get(RabbitConfigService);
+  await rabbitConfigService.registerMicroservices(app);
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
+
   console.log(`Application is running on: ${await app.getUrl()}`);
   console.log(`Swagger UI available at: ${await app.getUrl()}/api`);
 }
+
 void bootstrap();

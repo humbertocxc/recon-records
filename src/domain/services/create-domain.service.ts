@@ -1,12 +1,11 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Domain } from '../entities/domain.entity';
 import { Company } from '../../company/entities/company.entity';
 import { CreateDomainDto } from '../dto/create-domain.dto';
-import { ClientProxy } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
 import { isDomainInScope } from 'src/common/utils/scope-checker-domain.util';
+import { AmqpService } from 'src/common/messaging/amqp.service';
 
 @Injectable()
 export class CreateDomainService {
@@ -15,7 +14,7 @@ export class CreateDomainService {
     private readonly domainRepository: Repository<Domain>,
     @InjectRepository(Company)
     private readonly companyRepository: Repository<Company>,
-    @Inject('VULN_ENUM_SERVICE') private readonly client: ClientProxy,
+    private readonly amqpService: AmqpService,
   ) {}
 
   async create(createDomainDto: CreateDomainDto): Promise<Domain> {
@@ -39,24 +38,23 @@ export class CreateDomainService {
 
     const savedDomain = await this.domainRepository.save(domain);
 
+    if (!savedDomain.value || !savedDomain.companyId) {
+      console.warn('Created domain has no value to publish for enumeration.');
+      return savedDomain;
+    }
+
+    const domainToPublish = {
+      value: savedDomain.value,
+      companyId: savedDomain.companyId,
+    };
     try {
-      if ((savedDomain.value, savedDomain.companyId)) {
-        const domainToPublish = {
-          value: savedDomain.value,
-          companyId: savedDomain.companyId,
-        };
-        await lastValueFrom(
-          this.client.emit(
-            'domains_to_passive_enum_queue',
-            JSON.stringify(domainToPublish),
-          ),
-        );
-        console.log(
-          `Published new domain '${savedDomain.value}' for vulnerability enumeration.`,
-        );
-      } else {
-        console.warn('Created domain has no value to publish for enumeration.');
-      }
+      await this.amqpService.emit(
+        'domains_to_passive_enum_queue',
+        domainToPublish,
+      );
+      console.log(
+        `Published new domain '${savedDomain.value}' for vulnerability enumeration.`,
+      );
     } catch (error) {
       console.error(
         `Failed to publish domain '${savedDomain.value}' to queue:`,

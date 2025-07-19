@@ -13,19 +13,18 @@ export class FoundSubsConsumerController {
 
   @EventPattern('passive_found_subs_queue')
   async handlePassiveFoundSub(
-    @Payload() data: string,
+    @Payload() data: FoundSubDto,
     @Ctx() context: RmqContext,
   ) {
     const channel = context.getChannelRef();
     const originalMessage = context.getMessage();
-    const parsedData: FoundSubDto = JSON.parse(data);
 
     try {
       this.logger.log(
-        `Received message for 'passive_found_subs_queue': ${JSON.stringify(parsedData)}`,
+        `Received message for 'passive_found_subs_queue': ${JSON.stringify(data)}`,
       );
-      await this.foundSubsConsumerService.processFoundSubdomain(parsedData);
-      this.logger.log(`Successfully processed subdomain: ${parsedData.value}`);
+      await this.foundSubsConsumerService.processFoundSubdomain(data);
+      this.logger.log(`Successfully processed subdomain: ${data.value}`);
 
       channel.ack(originalMessage);
     } catch (error) {
