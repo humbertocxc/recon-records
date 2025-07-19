@@ -1,8 +1,10 @@
 import { Domain } from 'src/domain/entities/domain.entity';
+import { IpAddress } from 'src/ip/entities/ip.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -30,4 +32,7 @@ export class DnsZone {
 
   @Column({ default: 'active' })
   status: 'active' | 'inactive' | 'unknown';
+
+  @ManyToMany(() => IpAddress, (ip) => ip.dnsZone)
+  ips: IpAddress[];
 }

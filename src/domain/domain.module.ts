@@ -10,10 +10,11 @@ import { UpdateDomainService } from './services/update-domain.service';
 import { DeleteDomainService } from './services/delete-domain.service';
 import { FoundSubsConsumerService } from './services/found-subs-consumer.service';
 import { FoundSubsConsumerController } from './found-subs-consumer.controller';
+import { IpAddress } from 'src/ip/entities/ip.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Domain, Company]),
+    TypeOrmModule.forFeature([Domain, Company, IpAddress]),
     ClientsModule.register([
       {
         name: 'VULN_ENUM_SERVICE',

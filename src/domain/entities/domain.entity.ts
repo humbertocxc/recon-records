@@ -5,9 +5,11 @@ import {
   ManyToOne,
   JoinColumn,
   OneToOne,
+  ManyToMany,
 } from 'typeorm';
 import { Company } from '../../company/entities/company.entity';
 import { DnsZone } from 'src/dns/dns-zone/entities/dns-zone.entity';
+import { IpAddress } from 'src/ip/entities/ip.entity';
 
 @Entity()
 export class Domain {
@@ -35,4 +37,7 @@ export class Domain {
 
   @OneToOne(() => DnsZone, (zone) => zone.domain, { nullable: true })
   dnsZone?: DnsZone;
+
+  @ManyToMany(() => IpAddress, (ip) => ip.domains)
+  ips: IpAddress[];
 }

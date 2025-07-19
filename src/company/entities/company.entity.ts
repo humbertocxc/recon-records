@@ -1,5 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  ManyToMany,
+} from 'typeorm';
 import { Domain } from '../../domain/entities/domain.entity';
+import { IpAddress } from 'src/ip/entities/ip.entity';
 
 @Entity()
 export class Company {
@@ -17,4 +24,7 @@ export class Company {
 
   @OneToMany(() => Domain, (domain) => domain.company, { cascade: true })
   domains: Domain[];
+
+  @ManyToMany(() => IpAddress, (ip) => ip.company)
+  ips: IpAddress[];
 }

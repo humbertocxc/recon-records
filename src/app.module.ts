@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { CompanyModule } from './company/company.module';
 import { DomainModule } from './domain/domain.module';
 import { Company } from './company/entities/company.entity';
 import { Domain } from './domain/entities/domain.entity';
 import { DnsZoneModule } from './dns/dns-zone/dns-zone.module';
+import { IpModule } from './ip/ip.module';
 
 @Module({
   imports: [
@@ -25,11 +24,10 @@ import { DnsZoneModule } from './dns/dns-zone/dns-zone.module';
       synchronize: true,
       autoLoadEntities: true,
     }),
-    CompanyModule,
     DomainModule,
+    IpModule,
     DnsZoneModule,
+    CompanyModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

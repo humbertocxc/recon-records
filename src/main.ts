@@ -28,8 +28,6 @@ async function bootstrap() {
     .setTitle('Recon Records API')
     .setDescription('API documentation for the Recon Records Microservice')
     .setVersion('1.0')
-    .addTag('companies', 'Operations related to companies')
-    .addTag('domains', 'Operations related to domains')
     .addBearerAuth(
       {
         type: 'http',
