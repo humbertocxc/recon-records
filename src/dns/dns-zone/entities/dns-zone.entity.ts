@@ -1,3 +1,4 @@
+import { DnsRecord } from 'src/dns/dns-record/entities/dns-record.entity';
 import { Domain } from 'src/domain/entities/domain.entity';
 import { IpAddress } from 'src/ip/entities/ip.entity';
 import {
@@ -5,6 +6,7 @@ import {
   Entity,
   JoinColumn,
   ManyToMany,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -27,12 +29,12 @@ export class DnsZone {
   @Column({ nullable: true })
   whoisRegistrar: string;
 
-  @Column({ nullable: true })
-  createdAt?: Date;
-
   @Column({ default: 'active' })
   status: 'active' | 'inactive' | 'unknown';
 
   @ManyToMany(() => IpAddress, (ip) => ip.dnsZone)
   ips: IpAddress[];
+
+  @OneToMany(() => DnsRecord, (dnsRecord) => dnsRecord.dnsZone)
+  dnsRecords: DnsRecord[];
 }

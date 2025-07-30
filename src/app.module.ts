@@ -6,8 +6,10 @@ import { DomainModule } from './domain/domain.module';
 import { Company } from './company/entities/company.entity';
 import { Domain } from './domain/entities/domain.entity';
 import { DnsZoneModule } from './dns/dns-zone/dns-zone.module';
+import { DnsRecordModule } from './dns/dns-record/dns-record.module';
 import { IpModule } from './ip/ip.module';
 import { RabbitConfigService } from './common/messaging/rabbit-config.service';
+import { DnsRecordController } from './dns/dns-record/dns-record.controller';
 
 @Module({
   imports: [
@@ -29,8 +31,10 @@ import { RabbitConfigService } from './common/messaging/rabbit-config.service';
     IpModule,
     DnsZoneModule,
     CompanyModule,
+    DnsRecordModule,
   ],
   providers: [RabbitConfigService],
   exports: [RabbitConfigService],
+  controllers: [DnsRecordController],
 })
 export class AppModule {}

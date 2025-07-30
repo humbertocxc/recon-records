@@ -19,5 +19,6 @@ import { DeleteIpService } from './services/delete-ip.service';
     ListIpsService,
     DeleteIpService,
   ],
+  exports: [ListIpsService],
 })
 export class IpModule {}

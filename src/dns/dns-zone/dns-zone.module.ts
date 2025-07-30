@@ -9,5 +9,6 @@ import { Domain } from 'src/domain/entities/domain.entity';
   imports: [TypeOrmModule.forFeature([DnsZone, Domain])],
   providers: [DnsZoneService],
   controllers: [DnsZoneController],
+  exports: [DnsZoneService],
 })
 export class DnsZoneModule {}

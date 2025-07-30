@@ -1,11 +1,4 @@
-import {
-  IsString,
-  IsNotEmpty,
-  IsOptional,
-  IsUUID,
-  IsNumber,
-  IsFQDN,
-} from 'class-validator';
+import { IsString, IsNotEmpty, IsUUID, IsFQDN } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateDomainDto {
@@ -28,14 +21,6 @@ export class CreateDomainDto {
     },
   )
   value: string;
-
-  @ApiProperty({
-    description: 'The rank of the domain',
-    example: '',
-  })
-  @IsNumber()
-  @IsOptional()
-  rank?: number;
 
   @ApiProperty({
     description: 'The companyId of the domain',
