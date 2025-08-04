@@ -6,7 +6,7 @@ import {
   ManyToMany,
 } from 'typeorm';
 import { Domain } from '../../domain/entities/domain.entity';
-import { IpAddress } from 'src/ip/entities/ip.entity';
+import { IpAddress } from 'src/ip/ip-address/entities/ip.entity';
 
 @Entity()
 export class Company {
@@ -26,5 +26,5 @@ export class Company {
   domains: Domain[];
 
   @ManyToMany(() => IpAddress, (ip) => ip.company)
-  ips: IpAddress[];
+  ipAddresses: IpAddress[];
 }

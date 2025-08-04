@@ -30,10 +30,14 @@ export class IpAddress {
   @JoinTable()
   domains: Domain[];
 
-  @ManyToOne(() => DnsZone, (dnsZone) => dnsZone.ips, { nullable: true })
+  @ManyToOne(() => DnsZone, (dnsZone) => dnsZone.ipAddresses, {
+    nullable: true,
+  })
   dnsZone: DnsZone;
 
-  @ManyToOne(() => Company, (company) => company.ips, { nullable: true })
+  @ManyToOne(() => Company, (company) => company.ipAddresses, {
+    nullable: true,
+  })
   company: Company;
 
   @Column({ nullable: true })

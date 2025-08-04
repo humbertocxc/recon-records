@@ -1,7 +1,7 @@
 import { IsArray, IsOptional, IsString, IsUUID } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
-export class ListIpsDto {
+export class ListIpAddressesDto {
   @ApiPropertyOptional({
     description: 'Reverse DNS',
     example: 'host.example.com',

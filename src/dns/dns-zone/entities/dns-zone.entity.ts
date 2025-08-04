@@ -1,6 +1,6 @@
 import { DnsRecord } from 'src/dns/dns-record/entities/dns-record.entity';
 import { Domain } from 'src/domain/entities/domain.entity';
-import { IpAddress } from 'src/ip/entities/ip.entity';
+import { IpAddress } from 'src/ip/ip-address/entities/ip.entity';
 import {
   Column,
   Entity,
@@ -33,7 +33,7 @@ export class DnsZone {
   status: 'active' | 'inactive' | 'unknown';
 
   @ManyToMany(() => IpAddress, (ip) => ip.dnsZone)
-  ips: IpAddress[];
+  ipAddresses: IpAddress[];
 
   @OneToMany(() => DnsRecord, (dnsRecord) => dnsRecord.dnsZone)
   dnsRecords: DnsRecord[];

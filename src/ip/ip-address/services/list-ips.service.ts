@@ -2,16 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IpAddress } from '../entities/ip.entity';
 import { Repository } from 'typeorm';
-import { ListIpsDto } from '../dto/list-ips.dto';
+import { ListIpAddressesDto } from '../dto/list-ips.dto';
 
 @Injectable()
-export class ListIpsService {
+export class ListIpAddressesService {
   constructor(
     @InjectRepository(IpAddress)
     private ipRepo: Repository<IpAddress>,
   ) {}
 
-  async findAll(query: ListIpsDto): Promise<IpAddress[]> {
+  async findAll(query: ListIpAddressesDto): Promise<IpAddress[]> {
     console.log(query);
     return this.ipRepo.find({ relations: ['domains', 'dnsZone', 'company'] });
   }

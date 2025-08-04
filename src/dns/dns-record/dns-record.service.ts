@@ -11,7 +11,7 @@ import { CreateDnsRecordDto } from './dto/create-dns-record.dto';
 import { UpdateDnsRecordDto } from './dto/update-dns-record.dto';
 import { DnsRecordQueryDto } from './dto/dns-record-query.dto';
 import { DnsZoneService } from '../dns-zone/dns-zone.service';
-import { ListIpsService } from 'src/ip/services/list-ips.service';
+import { ListIpAddressesService } from 'src/ip/ip-address/services/list-ips.service';
 
 export enum DnsRecordEvent {
   CREATED = 'dns_record.created',
@@ -26,7 +26,7 @@ export class DnsRecordService {
     @InjectRepository(DnsRecord)
     private readonly dnsRecordRepository: Repository<DnsRecord>,
     private readonly dnsZoneService: DnsZoneService,
-    private readonly ipService: ListIpsService,
+    private readonly ipService: ListIpAddressesService,
   ) {}
 
   async createOrUpdate(

@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { Company } from '../../company/entities/company.entity';
 import { DnsZone } from 'src/dns/dns-zone/entities/dns-zone.entity';
-import { IpAddress } from 'src/ip/entities/ip.entity';
+import { IpAddress } from 'src/ip/ip-address/entities/ip.entity';
 
 @Entity()
 export class Domain {

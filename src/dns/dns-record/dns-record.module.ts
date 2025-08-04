@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DnsRecordService } from './dns-record.service';
 import { DnsRecordController } from './dns-record.controller';
 import { DnsRecord } from './entities/dns-record.entity';
-import { IpModule } from '../../ip/ip.module';
+import { IpModule } from '../../ip/ip-address/ip.module';
 import { DnsZoneModule } from '../dns-zone/dns-zone.module';
 
 @Module({

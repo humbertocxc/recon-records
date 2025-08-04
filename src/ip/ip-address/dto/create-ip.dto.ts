@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class CreateIpDto {
+export class CreateIpAddressDto {
   @ApiProperty({ example: '' })
   @IsIP()
   ip: string;

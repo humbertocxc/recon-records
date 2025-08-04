@@ -7,7 +7,7 @@ import { Company } from './company/entities/company.entity';
 import { Domain } from './domain/entities/domain.entity';
 import { DnsZoneModule } from './dns/dns-zone/dns-zone.module';
 import { DnsRecordModule } from './dns/dns-record/dns-record.module';
-import { IpModule } from './ip/ip.module';
+import { IpModule } from './ip/ip-address/ip.module';
 import { RabbitConfigService } from './common/messaging/rabbit-config.service';
 import { DnsRecordController } from './dns/dns-record/dns-record.controller';
 

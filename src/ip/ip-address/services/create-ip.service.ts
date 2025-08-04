@@ -2,13 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IpAddress } from '../entities/ip.entity';
 import { In, Repository } from 'typeorm';
-import { DnsZone } from '../../dns/dns-zone/entities/dns-zone.entity';
-import { Company } from '../../company/entities/company.entity';
-import { CreateIpDto } from '../dto/create-ip.dto';
-import { Domain } from '../../domain/entities/domain.entity';
+import { DnsZone } from '../../../dns/dns-zone/entities/dns-zone.entity';
+import { Company } from '../../../company/entities/company.entity';
+import { CreateIpAddressDto } from '../dto/create-ip.dto';
+import { Domain } from '../../../domain/entities/domain.entity';
 
 @Injectable()
-export class CreateIpService {
+export class CreateIpAddressService {
   constructor(
     @InjectRepository(IpAddress)
     private readonly ipRepo: Repository<IpAddress>,
@@ -20,7 +20,7 @@ export class CreateIpService {
     private readonly companyRepo: Repository<Company>,
   ) {}
 
-  async create(dto: CreateIpDto): Promise<IpAddress> {
+  async create(dto: CreateIpAddressDto): Promise<IpAddress> {
     const ip = this.ipRepo.create(dto);
 
     if (dto.dnsZoneId) {

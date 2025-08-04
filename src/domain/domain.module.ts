@@ -10,7 +10,7 @@ import { UpdateDomainService } from './services/update-domain.service';
 import { DeleteDomainService } from './services/delete-domain.service';
 import { FoundSubsConsumerService } from './services/found-subs-consumer.service';
 import { FoundSubsConsumerController } from './found-subs-consumer.controller';
-import { IpAddress } from 'src/ip/entities/ip.entity';
+import { IpAddress } from 'src/ip/ip-address/entities/ip.entity';
 import { AmqpService } from 'src/common/messaging/amqp.service';
 import { RabbitConfigService } from 'src/common/messaging/rabbit-config.service';
 

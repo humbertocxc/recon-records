@@ -6,10 +6,10 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { IpAddress } from '../entities/ip.entity';
 import { In, Repository } from 'typeorm';
-import { DnsZone } from '../../dns/dns-zone/entities/dns-zone.entity';
-import { Company } from '../../company/entities/company.entity';
-import { Domain } from '../../domain/entities/domain.entity';
-import { UpdateIpDto } from '../dto/update-ip.dto';
+import { DnsZone } from '../../../dns/dns-zone/entities/dns-zone.entity';
+import { Company } from '../../../company/entities/company.entity';
+import { Domain } from '../../../domain/entities/domain.entity';
+import { UpdateIpAddressDto } from '../dto/update-ip.dto';
 
 @Injectable()
 export class UpdateIpService {
@@ -24,7 +24,7 @@ export class UpdateIpService {
     private readonly companyRepo: Repository<Company>,
   ) {}
 
-  async update(ipAddress: string, dto: UpdateIpDto): Promise<IpAddress> {
+  async update(ipAddress: string, dto: UpdateIpAddressDto): Promise<IpAddress> {
     const ip = await this.ipRepo.findOneBy({ ip: ipAddress });
 
     if (!ip) {

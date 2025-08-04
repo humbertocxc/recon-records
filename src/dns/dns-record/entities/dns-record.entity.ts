@@ -7,7 +7,7 @@ import {
   Index,
 } from 'typeorm';
 import { DnsZone } from '../../dns-zone/entities/dns-zone.entity';
-import { IpAddress } from 'src/ip/entities/ip.entity';
+import { IpAddress } from 'src/ip/ip-address/entities/ip.entity';
 
 export enum DnsRecordType {
   A = 'A',
